@@ -8,8 +8,9 @@ from os import access
 from os import environ
 from pathlib import Path
 from sys import stderr
-from typing import Callable
+from typing import Callable, Type
 from typing import TextIO
+from pydoc import locate
 
 import faapi
 from click import BadParameter
@@ -26,6 +27,7 @@ from click.core import ParameterSource
 from click.shell_completion import CompletionItem
 from click_help_colors import HelpColorsGroup
 from faapi import FAAPI
+from faapi.interface.faapi_abc import FAAPI_ABC
 from falocalrepo_database import Database
 from requests import Response
 from requests import get
@@ -40,6 +42,7 @@ _envar_no_color: str = f"{__prog_name__}_NOCOLOR"
 _envar_multi_connection: str = f"{__prog_name__}_MULTI_CONNECTION"
 _envar_craw_delay: str = f"{__prog_name__}_CRAWL_DELAY"
 _envar_fa_root: str = f"{__prog_name__}_FA_ROOT"
+_envar_faapi_module: str = f"{__prog_name__}_FAAPI_MODULE"
 _cookies_setting: str = "COOKIES"
 _help_option_names: list[str] = ["--help", "-h"]
 
@@ -92,6 +95,7 @@ class EnvVars:
     MULTI_CONNECTION: bool = environ.get(_envar_multi_connection, None) is not None
     CRAWL_DELAY: int | None = int(e) if (e := environ.get(_envar_craw_delay, None)) is not None else None
     FA_ROOT: str | None = environ.get(_envar_fa_root, None)
+    FAAPI_MODULE: str | None = environ.get(_envar_faapi_module, None)
 
     @classmethod
     def print_database(cls, file: TextIO = stderr):
@@ -185,7 +189,10 @@ def open_api(db: Database, ctx: Context = None, *, check_login: bool = True) -> 
                            f"\n\nSet using '{app.name} {config_app.name} {config_cookies.name}'",
                            ctx, param_hint=repr("--database"))
 
-    api: FAAPI = FAAPI(cookies)
+    print(f"MODULE: {EnvVars.FAAPI_MODULE}")
+    FAAPI_module : Type[FAAPI_ABC] = locate(EnvVars.FAAPI_MODULE) if EnvVars.FAAPI_MODULE is not None else FAAPI
+
+    api: FAAPI_ABC = FAAPI_module(cookies)
 
     if EnvVars.CRAWL_DELAY is not None:
         EnvVars.print_crawl_delay()
