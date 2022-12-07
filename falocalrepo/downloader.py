@@ -3,7 +3,7 @@ from enum import EnumMeta
 from json import dump
 from operator import itemgetter
 from shutil import get_terminal_size
-from typing import Any
+from typing import Any, Optional
 from typing import Callable
 from typing import Iterable
 from typing import TextIO
@@ -406,11 +406,11 @@ class Downloader:
         self.thumbnail_errors += [] if thumb else [submission_id]
         return 0
 
-    def download_user_folder(self, user: str, folder: Folder, downloader_entries: Callable[[str, P], tuple[list[T], P]],
-                             page_start: P, entry_id_getter: Callable[[T], int | str], entry_formats: tuple[str, str],
+    def download_user_folder(self, /, user: str, folder: Folder, downloader_entries: Callable[[str, P], tuple[list[T], P, list[P]]],
+                             entry_id_getter: Callable[[T], int | str], entry_formats: tuple[str, str],
                              contains: Callable[[T], dict | None],
                              modify_checks: list[tuple[Callable[[T, dict], bool], str]],
-                             save: tuple[Callable[[T, dict | None], int | None], str], stop: int = -1,
+                             save: tuple[Callable[[T, dict | None], int | None], str], page_start: Optional[P] = None, stop: int = -1,
                              clear_last_found: bool = False, clear_found: bool = False, replace_overwrite: bool = None,
                              save_added_entry: Callable[[int | str], Any] = lambda *_: None,
                              save_modified_entry: Callable[[int | str], Any] = lambda *_: None,
@@ -437,6 +437,18 @@ class Downloader:
             self.clear_line()
             entries: list[T] = result[0]
             page = result[1]
+            sub_folders = result[2]
+            for sub_folder in sub_folders:
+                self.download_user_folder(user, folder, downloader_entries,
+                             sub_folder, entry_id_getter, entry_formats,
+                             contains,
+                             modify_checks,
+                             save, stop,
+                             clear_last_found, clear_found, replace_overwrite,
+                             save_added_entry,
+                             save_modified_entry,
+                             save_error_entry
+                             )
             entries_width: int = w if (w := len(str(len(entries)))) > 1 else 2
             for i, entry in enumerate(entries, 1):
                 t_width: int = terminal_width()
