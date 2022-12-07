@@ -189,8 +189,8 @@ def open_api(db: Database, ctx: Context = None, *, check_login: bool = True) -> 
                            f"\n\nSet using '{app.name} {config_app.name} {config_cookies.name}'",
                            ctx, param_hint=repr("--database"))
 
-    print(f"MODULE: {EnvVars.FAAPI_MODULE}")
-    FAAPI_module : Type[FAAPI_ABC] = locate(EnvVars.FAAPI_MODULE) if EnvVars.FAAPI_MODULE is not None else FAAPI
+    FAAPI_module = locate(EnvVars.FAAPI_MODULE) if EnvVars.FAAPI_MODULE is not None else FAAPI
+    assert issubclass(FAAPI_module, FAAPI_ABC)
 
     api: FAAPI_ABC = FAAPI_module(cookies)
 
