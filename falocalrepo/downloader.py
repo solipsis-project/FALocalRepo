@@ -3,7 +3,7 @@ from enum import EnumMeta
 from json import dump
 from operator import itemgetter
 from shutil import get_terminal_size
-from typing import Any, Optional
+from typing import Any, Optional, Tuple
 from typing import Callable
 from typing import Iterable
 from typing import TextIO
@@ -365,17 +365,25 @@ class Downloader:
         if self.err_to_bar(err):
             self.submission_errors += [submission_id]
             return err
+            
         submission: Submission = result[0]
-        self.bar_clear()
-        self.bar_close("\b")
-        self.bar(7)
-        file: bytes | None = self.download_bytes(submission.file_url)
-        retry: int = self.retry + 1
-        while file is None and (retry := retry - 1):
-            self.bar_message(f"RETRY {self.retry - retry + 1}", red)
-            self.api.handle_delay()
-            file = self.download_bytes(submission.file_url)
-        self.bar_message(("#" * self.bar_width) if file else "ERROR", green if file else red, always=True)
+        file_urls: list[str] = \
+            SubmissionsColumns.FILEURL.from_entry(submission.file_url)
+        def download(file_url: str, n: Optional[Tuple[int, int]]):
+            self.bar_clear()
+            self.bar_close("\b")
+            self.bar(7)
+            file: bytes | None = self.download_bytes(file_url)
+            retry: int = self.retry + 1
+            while file is None and (retry := retry - 1):
+                self.bar_message(f"RETRY {self.retry - retry + 1}", red)
+                self.api.handle_delay()
+                file = self.download_bytes(submission.file_url)
+            self.bar_message(("#" * self.bar_width) if file else "ERROR", green if file else red, always=True)
+            return file
+        
+        num_files: int = len(file_urls)
+        files: list[Optional[bytes]] = [download(file_url, (i, num_files)) for (i, file_url) in enumerate(file_urls)]
         self.bar_close("]")
         self.bar(1)
         thumb: bytes | None = self.download_bytes(submission.thumbnail_url or thumbnail)
@@ -394,7 +402,7 @@ class Downloader:
             else submission.description,
             SubmissionsColumns.FOOTER.name: (submission.footer_bbcode if self.bbcode else submission.footer)
             if not self.content_only else "",
-        }, [file], thumb, replace=replace)
+        }, files, thumb, replace=replace)
         if self.save_comments:
             save_comments(self.db, submissions_table, submission.id, submission.comments,
                           replace=replace, bbcode=self.bbcode)
@@ -402,7 +410,7 @@ class Downloader:
         self.bar_message(("#" * self.bar_width) if thumb else "ERROR", green if thumb else red, always=True)
         self.bar_close()
         self.added_submissions += [submission_id]
-        self.file_errors += [] if file else [submission_id]
+        self.file_errors += [] if all(files) else [submission_id]
         self.thumbnail_errors += [] if thumb else [submission_id]
         return 0
 
