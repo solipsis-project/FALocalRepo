@@ -2,12 +2,11 @@
 
 <img alt="logo" width="400" src="https://raw.githubusercontent.com/FurryCoders/Logos/main/logos/falocalrepo-transparent.png">
 
-# FALocalRepo
+# LocalRepo
 
 Pure Python program to download submissions, journals, and user folders from the FurAffinity forum in an easily handled
 database.
 
-[![](https://img.shields.io/pypi/v/falocalrepo?logo=pypi)](https://pypi.org/project/falocalrepo/)
 [![](https://img.shields.io/pypi/pyversions/falocalrepo?logo=Python)](https://www.python.org)
 
 [![](https://img.shields.io/github/v/tag/FurryCoders/falocalrepo?label=github&sort=date&logo=github&color=blue)](https://github.com/FurryCoders/falocalrepo)
@@ -15,7 +14,7 @@ database.
 
 </div>
 
-This is a fork of [the original FALocalRepo](https://github.com/FurryCoders/FALocalRepo) designed to allow support for websites other than FurAffinity. Discussion of the fork can be found [here](https://github.com/orgs/FurryCoders/discussions/1). 
+This is a fork of [FALocalRepo](https://github.com/FurryCoders/FALocalRepo) designed to allow support for websites other than FurAffinity. Discussion of the fork can be found [here](https://github.com/orgs/FurryCoders/discussions/1). 
 
 ## How to use this fork
 
@@ -40,14 +39,14 @@ library [faapi](https://pypi.org/project/faapi/). To ensure proper crawling beha
 FurAffinity's [robots.txt](https://www.furaffinity.net/robots.txt) in regard to allowed paths and crawl delay.
 
 The database and file-storage functions are handled independently by
-the [falocalrepo-database](https://pypi.org/project/falocalrepo-database/) package which performs all transactions,
+the [localrepo-database](https://github.com/solipsis-project/localrepo-database) package which performs all transactions,
 queries, and file operations.
 
-The [falocalrepo-server](https://pypi.org/project/falocalrepo-server/) package is used to provide the server
+The [localrepo-server](https://github.com/solipsis-project/localrepo-server) package is used to provide the server
 functionalities of the program.
 
 For an in-depth guide on the features of the program and guides on how to perform the most common operations, visit the
-project's [GitHub wiki](https://github.com/FurryCoders/falocalrepo/wiki).
+project's [GitHub wiki](https://github.com/solipsis-project/falocalrepo/wiki).
 
 ## Contents
 
@@ -92,39 +91,19 @@ details on which cookies to use.
 **Warning**: FurAffinity theme template must be set to "modern". Can be changed
 at [furaffinity.net/controls/settings/](https://www.furaffinity.net/controls/settings/).
 
-## Installation and Update
-
-To install the program it is sufficient to use Python pip and get the package `falocalrepo`.
-
-```shell
-pip install falocalrepo
-```
-
-To upgrade the program and its dependencies, use pip to upgrade all three components.
-
-```shell
-pip install --upgrade falocalrepo faapi falocalrepo-database falocalrepo-server
-```
-
-To check for updates use the [`updates` command](#updates). A message will appear if there is an update available for
-any component.
-
-_Note_: make sure that pip points to a Python 3.10 installation; you can check if it is correct using `pip --version`.
-
 ### Installation From Source
 
 To install from source, clone the repository, then using [poetry](https://python-poetry.org)
 run `poetry install` and `poetry build`. After the wheel has been built, you can install it using
 pip `pip install dist/*.whl`.
 
+Note that you first need to install its dependences [localrepo-api](https://github.com/solipsis-project/localrepo-api), [localrepo-database](https://github.com/solipsis-project/localrepo-database), and [localrepo-server](https://github.com/solipsis-project/localrepo-server) via similar methods.
+
 ## Cookies
 
-The scraping library used by this program needs two specific cookies from a logged-in FurAffinity session. These are
-cookie `a` and cookie `b`. The cookies' values usually take the form of hexadecimal strings
-like `356f5962-5a60-0922-1c11-65003b703038`.
+The scraping library used by this program needs specific cookies from a logged-in session. The cookies needed depend on the backend, and there is not currently documentation of which cookies are required for which backend. Likely in time this will be replaced with a better workflow, and [there is an issue for this.](https://github.com/solipsis-project/FALocalRepo/issues/3)
 
-The easiest way to obtain these cookies is by using a browser extension to extract them and then search for `a`
-and `b`.<br>
+The easiest way to obtain these cookies is by using a browser extension to extract them.<br>
 Alternatively, the storage inspection tool of a desktop browser can also be used. For example on Mozilla's Firefox this
 can be opened with &#8679;F9, on Safari with &#8997;&#8984;I, etc.
 
@@ -774,7 +753,7 @@ the `--truecolor` and `--8bit-color` options respectively.
 _Note_: the paw works best with a dark background.
 
 If you have suggestions on new flags to add (or color improvements for the existing ones), don't hesitate to open
-a [feature request](https://github.com/FurryCoders/FALocalRepo/issues/new?labels=enhancement&template=FEATURE-REQUEST.yml&title=%5BFeature+Request%5D%3A+)!
+a [feature request](https://github.com/solipsis-project/LocalRepo/issues/new?labels=enhancement&template=FEATURE-REQUEST.yml&title=%5BFeature+Request%5D%3A+)!
 
 ## Database
 
@@ -910,19 +889,9 @@ details.
 ## Issues
 
 If you encounter any problem while using the program, an issue can be opened on the project's page
-on [GitHub](https://github.com/FurryCoders/FALocalRepo/issues).
+on [GitHub](https://github.com/solipsis-project/LocalRepo/issues).
 
 Issues can also be used to suggest improvements and features.
 
 When opening an issue for a problem, please copy the error message and describe the operation in progress when the error
 occurred.
-
-## Appendix
-
-### Earlier Releases
-
-Release 3.0.0 was deleted from PyPi because of an error in the package information. However, it can still be found on
-GitHub [v3.0.0](https://github.com/FurryCoders/FALocalRepo/releases/tag/v3.0.0).
-
-Release binaries for versions 2.11.2 can be found on GitHub
-at [v2.11.2](https://github.com/FurryCoders/FALocalRepo/releases/tag/v2.11.2)

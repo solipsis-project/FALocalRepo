@@ -1,37 +1,36 @@
 [tool.poetry]
 name = "falocalrepo"
 version = "4.3.7"
-description = "Pure Python program to download any user's gallery, scraps, favorites, and journals from FurAffinity in an easily handled database."
+description = "Pure Python program to download any user's gallery, scraps, favorites, and journals from art gallery sites in an easily handled database. A fork of FALocalRepo."
 authors = ["Matteo Campinoti <matteo.campinoti94@gmail.com>"]
 license = "EUPL-1.2"
 readme = "README.md"
-homepage = "https://github.com/FurryCoders/FALocalRepo"
-repository = "https://github.com/FurryCoders/FALocalRepo"
+homepage = "https://github.com/solipsis-project/LocalRepo"
+repository = "https://github.com/solipsis-project/LocalRepo"
 classifiers = [
     "Programming Language :: Python :: 3.10",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: End Users/Desktop",
     "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
     "Topic :: Utilities",
 ]
 
 [tool.poetry.urls]
-"Changelog" = "https://github.com/FurryCoders/FALocalRepo/blob/main/CHANGELOG.md"
-"Source" = "https://github.com/FurryCoders/FALocalRepo"
-"Bug Reports" = "https://github.com/FurryCoders/FALocalRepo/issues"
-"Documentation" = "https://github.com/FurryCoders/FALocalRepo/wiki"
-"Download" = "https://pypi.org/project/falocalrepo/#files"
+"Changelog" = "https://github.com/solipsis-project/LocalRepo/blob/main/CHANGELOG.md"
+"Source" = "https://github.com/solipsis-project/LocalRepo"
+"Bug Reports" = "https://github.com/solipsis-project/LocalRepo/issues"
+"Documentation" = "https://github.com/solipsis-project/LocalRepo/wiki"
 
 [tool.poetry.scripts]
 falocalrepo = "falocalrepo.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-faapi = "~3.9.0"
-falocalrepo-database = "~5.4.2"
-falocalrepo-server = "~3.3.0"
+localrepo-api = "~3.9.0"
+localrepo-database = "~5.4.2"
+localrepo-server = "~3.3.0"
 psutil = "^5.9.2"
 click = "^8.1.3"
 click-help-colors = "^0.9.1"
