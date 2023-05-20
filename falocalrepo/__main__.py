@@ -14,7 +14,7 @@ from click import secho
 from click import UsageError
 from click.exceptions import Abort
 from click.exceptions import Exit
-from falocalrepo_database.exceptions import MultipleConnections
+from localrepo_database.exceptions import MultipleConnections
 
 from .console import app
 

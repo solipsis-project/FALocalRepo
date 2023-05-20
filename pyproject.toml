@@ -28,15 +28,15 @@ falocalrepo = "falocalrepo.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-localrepo-api = "~3.9.0"
-localrepo-database = "~5.4.2"
-localrepo-server = "~3.3.0"
 psutil = "^5.9.2"
 click = "^8.1.3"
 click-help-colors = "^0.9.1"
 pretty-errors = "^1.2.25"
 wcwidth = "^0.2.5"
 supports-color = "^0.1.2"
+localrepo-api = {path = "../localrepo-api"}
+localrepo-server = {path = "../localrepo-server"}
+localrepo-database = {path = "../localrepo-database"}
 
 [build-system]
 requires = ["poetry>=1.1.12"]

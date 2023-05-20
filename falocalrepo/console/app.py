@@ -4,9 +4,9 @@ from random import choice
 from typing import Callable
 from typing import Type
 
-import faapi
-import falocalrepo_database
-import falocalrepo_server
+import localrepo_api
+import localrepo_database
+import localrepo_server
 from click import BadParameter
 from click import Context
 from click import Group
@@ -25,10 +25,10 @@ from click.shell_completion import FishComplete
 from click.shell_completion import ShellComplete
 from click.shell_completion import ZshComplete
 from click.shell_completion import get_completion_class
-from falocalrepo_database import Database
-from falocalrepo_server import __name__ as __server_name__
-from falocalrepo_server import __version__ as __server_version__
-from falocalrepo_server import server
+from localrepo_database import Database
+from localrepo_server import __name__ as __server_name__
+from localrepo_server import __version__ as __server_version__
+from localrepo_server import server
 
 from .colors import *
 from .config import config_app

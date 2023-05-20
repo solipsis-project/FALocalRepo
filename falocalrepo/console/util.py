@@ -12,7 +12,7 @@ from typing import Callable, Type
 from typing import TextIO
 from pydoc import locate
 
-import faapi
+import localrepo_api
 from click import BadParameter
 from click import Choice
 from click import Context
@@ -26,9 +26,9 @@ from click import option
 from click.core import ParameterSource
 from click.shell_completion import CompletionItem
 from click_help_colors import HelpColorsGroup
-from faapi import FAAPI
-from faapi.interface.faapi_abc import FAAPI_ABC
-from falocalrepo_database import Database
+from localrepo_api import FAAPI
+from localrepo_api.interface.faapi_abc import FAAPI_ABC
+from localrepo_database import Database
 from requests import Response
 from requests import get
 from wcwidth import wcwidth

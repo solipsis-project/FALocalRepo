@@ -13,10 +13,10 @@ from click import option
 from click import pass_context
 from click import secho
 from click.shell_completion import CompletionItem
-from faapi import FAAPI
-from faapi.exceptions import Unauthorized
-from falocalrepo_database import Database
-from falocalrepo_database.database import clean_username
+from localrepo_api import FAAPI
+from localrepo_api.exceptions import Unauthorized
+from localrepo_database import Database
+from localrepo_database.database import clean_username
 from requests.exceptions import RequestException
 
 from .colors import *

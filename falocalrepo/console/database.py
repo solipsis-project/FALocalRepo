@@ -37,27 +37,27 @@ from click import pass_context
 from click import secho
 from click import style
 from click.shell_completion import CompletionItem
-from faapi.parse import bbcode_to_html
-from faapi.parse import clean_html
-from faapi.parse import html_to_bbcode
-from falocalrepo_database import Column
-from falocalrepo_database import Cursor
-from falocalrepo_database import Database
-from falocalrepo_database import Table
-from falocalrepo_database import __version__ as __database_version__
-from falocalrepo_database.database import query_to_sql
-from falocalrepo_database.selector import SelectorBuilder as Sb
-from falocalrepo_database.tables import CommentsColumns
-from falocalrepo_database.tables import HistoryColumns
-from falocalrepo_database.tables import JournalsColumns
-from falocalrepo_database.tables import SubmissionsColumns
-from falocalrepo_database.tables import UsersColumns
-from falocalrepo_database.tables import comments_table
-from falocalrepo_database.tables import journals_table
-from falocalrepo_database.tables import submissions_table
-from falocalrepo_database.tables import users_table
-from falocalrepo_database.util import clean_username
-from falocalrepo_database.util import tiered_path
+from localrepo_api.parse import bbcode_to_html
+from localrepo_api.parse import clean_html
+from localrepo_api.parse import html_to_bbcode
+from localrepo_database import Column
+from localrepo_database import Cursor
+from localrepo_database import Database
+from localrepo_database import Table
+from localrepo_database import __version__ as __database_version__
+from localrepo_database.database import query_to_sql
+from localrepo_database.selector import SelectorBuilder as Sb
+from localrepo_database.tables import CommentsColumns
+from localrepo_database.tables import HistoryColumns
+from localrepo_database.tables import JournalsColumns
+from localrepo_database.tables import SubmissionsColumns
+from localrepo_database.tables import UsersColumns
+from localrepo_database.tables import comments_table
+from localrepo_database.tables import journals_table
+from localrepo_database.tables import submissions_table
+from localrepo_database.tables import users_table
+from localrepo_database.util import clean_username
+from localrepo_database.util import tiered_path
 from wcwidth import wcswidth
 
 from .colors import *

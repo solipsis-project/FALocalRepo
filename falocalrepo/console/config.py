@@ -16,9 +16,9 @@ from click import echo
 from click import group
 from click import option
 from click import pass_context
-from falocalrepo_database import Cursor
-from falocalrepo_database import Database
-from falocalrepo_database.tables import SubmissionsColumns
+from localrepo_database import Cursor
+from localrepo_database import Database
+from localrepo_database.tables import SubmissionsColumns
 
 from .colors import *
 from .util import CustomHelpColorsGroup

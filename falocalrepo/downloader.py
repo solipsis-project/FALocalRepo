@@ -12,27 +12,27 @@ from warnings import filterwarnings
 
 import bs4
 from click import echo
-from faapi import Comment
-from faapi import FAAPI
-from faapi import Journal
-from faapi import Submission
-from faapi import SubmissionPartial
-from faapi import UserPartial
-from faapi.comment import flatten_comments
-from faapi.exceptions import DisabledAccount
-from faapi.exceptions import NotFound
-from faapi.exceptions import NoticeMessage
-from faapi.exceptions import ServerError
-from faapi.journal import JournalPartial
-from falocalrepo_database import Column
-from falocalrepo_database import Database
-from falocalrepo_database.selector import SelectorBuilder as Sb
-from falocalrepo_database.tables import CommentsColumns
-from falocalrepo_database.tables import JournalsColumns
-from falocalrepo_database.tables import SubmissionsColumns
-from falocalrepo_database.tables import UsersColumns
-from falocalrepo_database.tables import journals_table
-from falocalrepo_database.tables import submissions_table
+from localrepo_api import Comment
+from localrepo_api import FAAPI
+from localrepo_api import Journal
+from localrepo_api import Submission
+from localrepo_api import SubmissionPartial
+from localrepo_api import UserPartial
+from localrepo_api.comment import flatten_comments
+from localrepo_api.exceptions import DisabledAccount
+from localrepo_api.exceptions import NotFound
+from localrepo_api.exceptions import NoticeMessage
+from localrepo_api.exceptions import ServerError
+from localrepo_api.journal import JournalPartial
+from localrepo_database import Column
+from localrepo_database import Database
+from localrepo_database.selector import SelectorBuilder as Sb
+from localrepo_database.tables import CommentsColumns
+from localrepo_database.tables import JournalsColumns
+from localrepo_database.tables import SubmissionsColumns
+from localrepo_database.tables import UsersColumns
+from localrepo_database.tables import journals_table
+from localrepo_database.tables import submissions_table
 from requests import RequestException
 from requests import Response
 
