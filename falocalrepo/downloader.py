@@ -60,6 +60,7 @@ class Folder(str, Enum):
     userpage = "userpage"
     watchlist_by = "watchlist-by"
     watchlist_to = "watchlist-to"
+    tag = "tag"
 
     @classmethod
     def as_list(cls: EnumMeta) -> list[str]:
@@ -668,6 +669,41 @@ class Downloader:
         self.bar_message("FOUND", green, always=True)
         self.bar_close()
         return user.name_url, err
+
+    def download_tags(self, tags: list[str]):
+        operation = "Downloading"
+        for tag in tags:
+            echo(f"{operation}: {yellow}{tag}{reset}", color=self.color)
+            self.download_tag(tag)
+
+    def download_tag(self, tag: str, stop: int = -1):
+        operation: str = "Downloading" if stop < 0 else "Updating"
+        echo(f"{operation}: {yellow}{tag}{reset}", color=self.color)
+        
+        page_start = 1
+        modify_checks: list[tuple[Callable[[SubmissionPartial, dict], bool], str]] = []
+
+        def save(sub_partial: SubmissionPartial, db_entry: dict | None, ) -> int:
+            return self.download_submission(
+                sub_partial.id,
+                False,
+                [*(db_entry or {}).get(SubmissionsColumns.FAVORITE.name, [])],
+                sub_partial.thumbnail_url,
+                self.replace)
+
+        err = self.download_user_folder(
+            user=tag, folder=Folder.tag, downloader_entries=self.api.tag, page_start=page_start,
+            entry_id_getter=lambda s: s.id,
+            entry_formats=("{0.id:010}", "{0.title}"),
+            contains=lambda s: self.db.submissions[s.id],
+            modify_checks=modify_checks,
+            save=(save, ""),
+            stop=stop, 
+            save_modified_entry=lambda m: self.modified_submissions.append(m),
+        )
+        return err
+        
+
 
     def _download_users(self, users_folders: Iterable[tuple[str, list[str]]], stop: int = -1):
         operation: str = "Downloading" if stop < 0 else "Updating"

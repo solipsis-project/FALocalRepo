@@ -34,9 +34,10 @@ click-help-colors = "^0.9.1"
 pretty-errors = "^1.2.25"
 wcwidth = "^0.2.5"
 supports-color = "^0.1.2"
-localrepo-api = {path = "../localrepo-api"}
 localrepo-server = {path = "../localrepo-server"}
 localrepo-database = {path = "../localrepo-database"}
+localrepo-api = {path = "../localrepo-api"}
+urllib3 = "<2"
 
 [build-system]
 requires = ["poetry>=1.1.12"]

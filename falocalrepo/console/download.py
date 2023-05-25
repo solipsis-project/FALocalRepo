@@ -197,6 +197,69 @@ def download_users(ctx: Context, database: Callable[..., Database], users: tuple
             downloader.verbose_report(report_file)
         backup_database(db, ctx, "download")
 
+# noinspection DuplicatedCode
+@download_app.command("tags", short_help="Download tags.", no_args_is_help=True)
+@option("--tag", "-t", "tags", metavar="TAG", required=True, multiple=True, type=str, callback=users_callback,
+        help="Username.")
+@retry_option
+@comments_option
+@content_only_option
+@option("--replace", is_flag=True, default=False, show_default=True, help="Replace entries already in database.")
+@dry_run_option
+@verbose_report_option
+@report_file_option
+@database_exists_option
+@color_option
+@help_option
+@pass_context
+@docstring_format(', '.join([c.value for c in FolderChoice.completion_items] +
+                            [Folder.watchlist_by + f":{yellow}FOLDER{reset}"] +
+                            [Folder.watchlist_to + f":{yellow}FOLDER{reset}"]))
+def download_tag(ctx: Context, database: Callable[..., Database], tags: tuple[str],
+                   retry: int | None, save_comments: bool, content_only: bool, replace: bool, dry_run: bool,
+                   verbose_report: bool, report_file: TextIO | None):
+    """
+    Download specific user tags. {yellow}USER{reset} can be set to {cyan}@me{reset} to fetch own
+    username. {cyan}watchlist-by:{yellow}FOLDER{reset} and {cyan}watchlist-to:{yellow}FOLDER{reset} arguments add the
+    specified {yellow}FOLDER{reset}(s) to the new user entries.
+
+    The {yellow}--retry{reset} option enables downloads retries for submission files and thumbnails up to 5 retries.
+
+    The {yellow}--no-comments{reset} option disables saving comments for submissions and journals.
+
+    The {yellow}--content-only{reset} option disables saving headers and footers.
+
+    If the {yellow}--replace{reset} option is used, existing entries in the database will be updated (favorites are
+    maintained).
+
+    The optional {yellow}--dry-run{reset} option disables downloading and saving and simply lists fetched entries.
+    Users are not added/deactivated.
+    """
+    db: Database = database()
+    api: FAAPI = open_api(db, ctx)
+    downloader: Downloader = Downloader(db, api, color=ctx.color, comments=save_comments, content_only=content_only,
+                                        retry=retry or 0, replace=replace, dry_run=dry_run)
+    if not dry_run:
+        backup_database(db, ctx, "predownload")
+        add_history(db, ctx, tags=tags)
+    try:
+        downloader.download_tags(list(tags))
+    except KeyboardInterrupt:
+        echo()
+        raise
+    except Unauthorized as err:
+        secho(f"\nError: Unauthorized{(': ' + ' '.join(err.args)) if err.args else ''}", fg="red", color=ctx.color)
+        ctx.exit(1)
+    except RequestException as err:
+        secho(f"\nError: An error occurred during download: {err!r}.", fg="red", color=ctx.color)
+        ctx.exit(1)
+    finally:
+        if report := downloader.verbose_report() if verbose_report else downloader.report():
+            echo(f"\n{report}\n", color=ctx.color)
+        if report_file:
+            downloader.verbose_report(report_file)
+        backup_database(db, ctx, "download")
+
 
 # noinspection DuplicatedCode
 @download_app.command("update", short_help="Download new entries for users in database.")
