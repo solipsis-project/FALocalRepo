@@ -1,5 +1,65 @@
 # Changelog
 
+## 4.4.4
+
+### Changes
+
+* The new version of FAAPI does not use [CloudflareScrape](https://github.com/Anorov/cloudflare-scrape) anymore
+
+### Fixes
+
+* Fix compatibility issues between version 2.0.0 of [urllib3](https://pypi.org/project/urllib3/)
+  and [cfscrape](https://pypi.org/project/cfscrape/)
+
+### Dependencies
+
+* Use [faapi ~3.11.0](https://pypi.org/project/faapi/3.11.0)
+    * Fix [issue #8](https://github.com/FurryCoders/FALocalRepo/issues/8)
+    * Fix [CVE-2023-32681](https://cve.report/CVE-2023-32681)
+
+## 4.4.3
+
+### Fixes
+
+* Fix user folders being incorrectly saved as `Folder.x` instead of just the folder name in the database when
+  running `download users` on Python 3.11
+    * Also fixes `ValueError: 'Folder.x' is not in list` errors when running `download update`
+    * *NOTE:* To fix user folders with the wrong content, use the `database edit` command
+
+### Dependencies
+
+* Use [falocalrepo-database ~5.4.4](https://pypi.org/project/falocalrepo-database/5.4.4)
+    * Fix crash on startup on Python 3.11
+
+## 4.4.2
+
+### New Features
+
+* Support New Fur Affinity UI ✨
+    * Support the new UI introduced on November 26, 2022
+    * *Note:* the new UI does not show comment parents yet, but the parent comment link is still present in the HTML and
+      just commented out, so the parser uses regex to extract the parent ID; this could cause unforeseen issues so be
+      careful when downloading comments
+
+### Dependencies
+
+* Use [faapi ~3.10.0](https://pypi.org/project/faapi/3.10.0)
+    * Support New Fur Affinity UI
+    * Fix [issue #7](https://github.com/FurryCoders/FALocalRepo/issues/7)
+
+## 4.4.1
+
+### Fixes
+
+* Fix dates for journals and submissions being parsed incorrectly on some occasions
+
+### Dependencies
+
+* Use [faapi ~3.9.6](https://pypi.org/project/faapi/3.9.6)
+    * Fix incorrect parsing of dates on some journals and submissions
+* Use [falocalrepo-server ~3.3.3](https://pypi.org/project/falocalrepo-server/3.3.3)
+    * Fix issues with thumbnails and the zoom button for submissions with multiple files
+
 ## 4.4.0
 
 ### New Features
@@ -42,13 +102,23 @@
   last one to be downloaded/updated, and the download was interrupted manually or by an error
 * Fix after-download counters not being correct if the download was interrupted
 * Fix typos and errors in help messages
+* Fix ` being removed from usernames
 
 ### Dependencies
 
-* Use [faapi ~3.9.0](https://pypi.org/project/faapi/3.9.0)
-* Use [falocalrepo-database ~5.4.2](https://pypi.org/project/falocalrepo-server/5.4.2)
-* Use [falocalrepo-server ~3.3.0](https://pypi.org/project/falocalrepo-server/3.3.0)
-* Use [psutil ~5.9.2](https://pypi.org/project/faapi/5.9.2)
+* Use [faapi ~3.9.2](https://pypi.org/project/faapi/3.9.2)
+    * Fix users with ` in their name not being handled correctly
+    * BBCode to HTML conversion
+    * Improvements to BBCode conversion
+* Use [falocalrepo-database ~5.4.3](https://pypi.org/project/falocalrepo-database/5.4.3)
+    * Add `SUBMISSIONS.FOOTER`, `JOURNAL.HEADER`, and `JOURNAL.FOOTER`
+    * Add BBCode setting to `SETTINGS`
+* Use [falocalrepo-server ~3.3.2](https://pypi.org/project/falocalrepo-server/3.3.2)
+    * New grid view for submissions with multiple files
+    * Support BBCode
+    * Show user icons
+    * Show headers and footers for submissions and journals
+* Use [psutil ^5.9.3](https://pypi.org/project/faapi/5.9.3)
 
 ## 4.3.7
 

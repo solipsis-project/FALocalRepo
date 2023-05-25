@@ -381,7 +381,8 @@ def html_to_ansi(html: str, *, root: bool = False) -> str:
     for span in html_parsed.select("span.bbcode[style*=color]"):
         for child in span.select("*"):
             child.replaceWith(html_to_ansi(str(child)))
-        if (color := m[1] if (m := match(r".*color: ([^ ;]+).*", span.attrs["style"])) else "").lower() in colors_dict:
+        if (color := (m[1] if (m := match(r".*color: ([^ ;]+).*", span.attrs["style"])) else "").lower()) \
+                in colors_dict:
             color = colors_dict[color]
         elif color in css_colors or color.startswith("#"):
             color = hex_to_ansi(css_colors.get(color, color), truecolor=supports_truecolor)
@@ -904,6 +905,8 @@ def database_view(ctx: Context, database: Callable[..., Database], table: str, i
     View a single entry in the terminal. Submission descriptions, journal contents, and user profile pages are rendered
     and formatted.
 
+    Comments are not shown by default; to view them, use the {yellow}--view-comments{reset} option.
+
     Formatting is limited to alignment, horizontal lines, quotes, links, color, and emphasis. To view the properly
     formatted HTML/BBCode content, use the {yellow}server{reset} command. Formatting can be disabled with the
     {yellow}--raw-content{reset} option to print the raw content.
@@ -1124,7 +1127,7 @@ def database_edit(ctx: Context, database: Callable[..., Database], table: str, _
             if not add_submission_files and entry[SubmissionsColumns.FILEEXT.name]:
                 fs, _ = db.submissions.get_submission_files(_id)
                 for f in fs:
-                    f.unlink()
+                    f.unlink(missing_ok=True)
             exts: list[str] = entry[SubmissionsColumns.FILEEXT.name] if add_submission_files else []
             for n, f in enumerate(submission_file, len(exts)):
                 exts.append(db.submissions.save_submission_file(_id, f.read_bytes(), "submission",
@@ -1190,6 +1193,9 @@ def database_copy(ctx: Context, database: Callable[..., Database], database_dest
     {cyan}%{reset} as query. The {yellow}TABLE{reset} value can be one of {tables}.
 
     If no {yellow}--query{reset} option is given, all major tables from the origin database are copied ({tables}).
+
+    Existing submissions are not replaced by default; to replace existing entries in {yellow}DATABASE_DEST{reset}, use
+    the {yellow}--replace{reset} option.
     """
 
     db: Database = database()
@@ -1235,6 +1241,9 @@ def database_merge(ctx: Context, database: Callable[..., Database], database_ori
     {cyan}%{reset} as query. The {yellow}TABLE{reset} value can be one of {tables}.
 
     If no {yellow}--query{reset} option is given, all major tables from the origin database are copied ({tables}).
+
+    Existing submissions are not replaced by default; to replace existing entries with those from
+    {yellow}DATABASE_ORIGIN{reset}, use the {yellow}--replace{reset} option.
     """
 
     db: Database = database()
