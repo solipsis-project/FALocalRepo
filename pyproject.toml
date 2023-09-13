@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "falocalrepo"
+name = "localrepo"
 version = "4.3.7"
 description = "Pure Python program to download any user's gallery, scraps, favorites, and journals from art gallery sites in an easily handled database. A fork of FALocalRepo."
 authors = ["Matteo Campinoti <matteo.campinoti94@gmail.com>"]
@@ -24,7 +24,7 @@ classifiers = [
 "Documentation" = "https://github.com/solipsis-project/LocalRepo/wiki"
 
 [tool.poetry.scripts]
-falocalrepo = "falocalrepo.__main__:main"
+localrepo = "localrepo.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
